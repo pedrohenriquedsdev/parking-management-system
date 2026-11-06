@@ -158,6 +158,23 @@ Pergunte somente quando o domínio indicar:
 - **Acessibilidade:** meta WCAG, navegação por teclado, leitor de tela.
 - **Integrações:** contrato, versionamento, timeout, retry, fallback.
 
+### Diagramas (sugestão, não pergunta obrigatória)
+
+Sugira diagramas Mermaid por padrão; não transforme isso em pergunta obrigatória. Confirme o conjunto na validação final.
+
+| Tema | Diagrama sugerido | Quando incluir |
+| --- | --- | --- |
+| Relacionamentos de dados | `erDiagram` | Sempre que houver mais de uma entidade relevante |
+| Domínio e agregados | `classDiagram` | Quando invariantes, herança ou composição importarem |
+| Fluxo de requisição | `sequenceDiagram` | Sempre que houver mais de dois participantes |
+| Caminho de erro ou decisão | `flowchart` | Quando houver retry, fallback ou compensação |
+| Ciclo de vida | `stateDiagram-v2` | Quando existir máquina de estados com transições |
+| Arquitetura | `flowchart` (C4) | Contexto, containers e componentes |
+| Implantação | `flowchart` | Mais de um serviço ou dependência de rede |
+| Fases | `gantt` | Quando houver cronograma ou dependência entre fases |
+
+Regras: um assunto por diagrama; rótulos em pt-BR; IDs iguais aos do texto; sem dados sensíveis; se não renderizar, descrever em texto.
+
 ## 5. Como usar a ferramenta `question`
 
 Regras:
@@ -220,6 +237,7 @@ Antes de salvar, apresente um resumo de 5 a 10 linhas e faça uma última rodada
 
 1. **Arquitetura e decisões** — a arquitetura proposta e os `DEC` estão corretos? Alguma decisão precisa ser revista?
 2. **Riscos e pendências** — as premissas e decisões provisórias podem ser confirmadas? Alguma pendência bloqueia a aprovação?
+3. **Diagramas** — os diagramas propostos cobrem relacionamentos, fluxos e estados? Falta algum que ajude a explicar o design?
 
 Opções:
 

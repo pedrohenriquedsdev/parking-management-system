@@ -33,6 +33,7 @@ A entrevista é parte obrigatória do fluxo. O prompt inicial nunca é suficient
 8. **Entrevista explícita.** Não deduza silenciosamente o que pode ser perguntado. Toda decisão material é confirmada com o usuário.
 9. **Ambiguidade classificada.** Nenhuma ambiguidade é resolvida "no achismo": ela recebe tipo, impacto e ação, e as materiais são levadas ao sistema de perguntas do ambiente.
 10. **Não implementar.** Entregue apenas o documento. Trechos ilustrativos (assinaturas, payloads, DDL, pseudocódigo) são permitidos quando marcados como ilustrativos; não crie código, migrations ou configuração.
+11. **Diagramas quando explicam.** Relacionamentos, fluxos, estados, arquitetura e implantação devem ser explicados também por diagramas Mermaid versionáveis. Um diagrama bom reduz ambiguidade; não é decoração.
 
 ## Entrevista obrigatória
 
@@ -177,11 +178,37 @@ Leia `references/tdd-template.md` e use a estrutura dele como esqueleto obrigat�
 - **Riscos técnicos:** probabilidade, impacto, mitigação, dono e decisão relacionada.
 - **Plano de implementação:** fases, ordem, dependências e critério de conclusão técnico.
 
+#### 6.1 Diagramas Mermaid (sugeridos em todo TDD)
+
+Sugira e produza diagramas Mermaid sempre que eles explicarem melhor do que texto corrido. Todo TDD deve **avaliar** os diagramas abaixo; os que não fizerem sentido devem ser marcados como `Não aplicável` com justificativa curta.
+
+| Pergunta que o diagrama responde | Tipo Mermaid | Seção sugerida |
+| --- | --- | --- |
+| Quem usa o sistema e com quais sistemas externos ele fala? | `flowchart` (C4 contexto) | 4.2 |
+| Quais aplicações, bancos, filas e storages existem? | `flowchart` (C4 containers) | 4.3 |
+| Como os componentes internos se relacionam? | `flowchart` (C4 componentes) | 4.4 |
+| Como as entidades e tabelas se relacionam? | `erDiagram` | 6.1 |
+| Como o domínio se organiza em classes/agregados? | `classDiagram` | 6.1 (opcional) |
+| Como uma requisição percorre o sistema, passo a passo? | `sequenceDiagram` | 8.1 |
+| Quais estados existem e quais transições são válidas? | `stateDiagram-v2` | 8.3 |
+| Qual o caminho de decisão, erro ou compensação? | `flowchart` | 8.2 |
+| Qual a ordem e as dependências das fases? | `gantt` ou `flowchart` | 14 |
+| Como o ambiente é implantado e conectado? | `flowchart` | 11.3 |
+
+Regras para diagramas:
+
+- **Um assunto por diagrama.** Se passar de ~15 nós, divida em visões (contexto, fluxo, detalhe).
+- **Título e rótulos claros**, em pt-BR, usando os mesmos nomes e IDs do texto (`C-001`, `API-001`, `DEC-001`).
+- **Coerência obrigatória:** o diagrama não pode contradizer o texto, o modelo de dados ou o registro de decisões.
+- **Sem dados sensíveis:** não inclua nomes de clientes, placas reais, segredos ou credenciais.
+- **Versionável:** prefira Mermaid; se o ambiente não renderizar, mantenha o bloco e descreva o diagrama em texto.
+- **Catálogo:** registre em `4.6` quais diagramas foram incluídos e quais foram dispensados.
+
 Regras de conteúdo:
 
 - **IDs:** `OBJ` (objetivos técnicos), `RT` (restrições), `PT` (premissas técnicas), `C` (componentes), `API` (endpoints), `E` (entidades), `INT` (integrações), `DEC` (decisões), `R` (riscos), `Q` (perguntas), `AMB` (ambiguidades). Referencie requisitos do PRD como `PRD:RF-001` / `PRD:RNF-001`.
 - **Rastreabilidade:** todo requisito do PRD dentro do recorte deve aparecer na matriz com componente, contrato/dado, teste e decisão.
-- **Diagramas:** prefira Mermaid versionável. Se não for possível, descreva o diagrama em texto.
+- **Diagramas:** siga o catálogo da seção 6.1. Todo diagrama deve ter título, rótulos claros e coerência com IDs e nomes do texto. Relacionamentos, fluxos e estados são os candidatos prioritários.
 - **Trechos ilustrativos:** assinaturas, payloads, DDL e pseudocódigo são permitidos apenas como ilustração, marcados como tal. Não implemente.
 - **Não aplicável:** seções que não fizerem sentido devem ser marcadas como `Não aplicável` com justificativa curta — nunca placeholders vazios.
 
@@ -193,6 +220,7 @@ Leia `references/review-checklist.md` e aplique cada item. Corrija o documento a
 - toda decisão material está no registro ADR e nenhuma seção contradiz o registro;
 - todo requisito do PRD no recorte tem tratamento e rastreabilidade;
 - contratos, dados, fluxos e erros estão coerentes entre si;
+- os diagramas Mermaid renderizam, têm título e são coerentes com o texto, os IDs e os nomes;
 - segurança, privacidade, observabilidade, backup e rollback foram tratados;
 - não há tecnologia, número ou fato inventado sem marcação de premissa;
 - toda ambiguidade foi classificada e as Bloqueantes/Altas foram perguntadas ou confirmadas como decisão provisória;
@@ -206,6 +234,7 @@ Pergunte, no máximo em duas chamadas:
 
 1. **Arquitetura e decisões** — a arquitetura proposta e os registros `DEC` estão corretos? Alguma decisão precisa ser revista?
 2. **Riscos e pendências** — as premissas e decisões provisórias podem ser confirmadas? Alguma pendência impede a aprovação?
+3. **Diagramas** — os diagramas propostos cobrem relacionamentos, fluxos e estados? Falta algum que ajude a explicar o design?
 
 Opções típicas da rodada final: `Aprovar e salvar` (Recomendado), `Revisar arquitetura`, `Revisar decisões`, `Responder pendências`.
 Se existir ambiguidade **Bloqueante** sem resposta ou sem decisão provisória confirmada, **não ofereça** `Aprovar e salvar`; ofereça apenas as opções que resolvem a pendência.
@@ -220,6 +249,7 @@ Grave o arquivo no caminho definido. Na resposta final, informe de forma concisa
 - resumo em 2–3 frases da solução técnica e do recorte coberto;
 - quantas decisões foram registradas (`Aceitas`, `Propostas`, `Substituídas`);
 - quantas ambiguidades foram resolvidas, confirmadas ou permanecem em aberto;
+- quais diagramas Mermaid foram incluídos e em quais seções;
 - as 3 decisões ou perguntas em aberto mais críticas;
 - sugestão de próximo passo: revisar com o time de engenharia e, se o projeto usa OpenSpec, usar o TDD como insumo de `/opsx-propose` ou `/opsx-apply`.
 

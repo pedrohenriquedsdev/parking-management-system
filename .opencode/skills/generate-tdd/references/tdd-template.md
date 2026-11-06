@@ -3,6 +3,8 @@
 > **Como usar:** este é o esqueleto obrigatório do documento. Substitua todo texto entre `<...>` pelo conteúdo real. Remova as citações de orientação (`>`) antes de salvar. Não deixe placeholders vazios: use `Não aplicável` com justificativa ou registre uma pergunta em aberto.
 >
 > **TDD = Technical Design Document.** Não confundir com Test-Driven Development. Os trechos de código, payloads e DDL são ilustrativos; o documento não implementa a solução.
+>
+> **Diagramas:** use Mermaid para explicar relacionamentos, fluxos, estados e implantação. Todo diagrama deve ter título, rótulos claros e coerência com os IDs e nomes do texto.
 
 ---
 
@@ -113,6 +115,30 @@ flowchart TB
 
 <Como os dados entram, trafegam, são persistidos e saem. Destaque dados sensíveis, volumes e retenção.>
 
+### 4.6 Catálogo de diagramas
+
+<Registre os diagramas incluídos e os dispensados. Diagramas são recomendados para relacionamentos, fluxos, estados e implantação; não são decoração.>
+
+| Diagrama | Tipo Mermaid | Seção | O que explica | Status |
+| --- | --- | --- | --- | --- |
+| <Contexto> | `flowchart` | 4.2 | <quem usa e sistemas externos> | <incluído> |
+| <Containers> | `flowchart` | 4.3 | <aplicações, bancos, filas e storage> | <incluído> |
+| <Entidades> | `erDiagram` | 6.1 | <relacionamentos do modelo de dados> | <incluído> |
+| <Fluxo principal> | `sequenceDiagram` | 8.1 | <passo a passo da requisição> | <incluído> |
+| <Estados> | `stateDiagram-v2` | 8.3 | <estados e transições válidas> | <incluído/justificar> |
+| <Caminho de erro> | `flowchart` | 8.2 | <decisões, falhas e compensações> | <incluído/justificar> |
+| <Implantação> | `flowchart` | 11.3 | <ambiente e conexões> | <incluído/justificar> |
+| <Fases> | `gantt` | 14.1 | <ordem e dependência das fases> | <incluído/justificar> |
+
+### 4.7 Diretrizes de diagramas
+
+- **Um assunto por diagrama.** Acima de ~15 nós, divida em visões.
+- **Rótulos em pt-BR** e iguais aos usados no texto; referencie IDs (`C-001`, `API-001`, `DEC-001`).
+- **Coerência:** o diagrama não pode contradizer o texto, o modelo de dados ou as decisões.
+- **Sem dados sensíveis:** nada de nomes de clientes, placas reais, segredos ou credenciais.
+- **Versionável:** prefira Mermaid; se não renderizar, mantenha o bloco e descreva o diagrama em texto.
+- **Legenda e título** quando o diagrama tiver símbolos ou abreviações próprias.
+
 ## 5. Componentes e responsabilidades
 
 | ID | Componente | Responsabilidade | Tecnologia | Interfaces | Dono |
@@ -135,6 +161,20 @@ erDiagram
         uuid id PK
         string campo
     }
+```
+
+<Se o domínio tiver agregados, invariantes ou herança relevantes, complemente com um `classDiagram`.>
+
+```mermaid
+classDiagram
+    class Agregado {
+        +UUID id
+        +operacao()
+    }
+    class Entidade {
+        +UUID id
+    }
+    Agregado "1" --> "*" Entidade : contém
 ```
 
 ### 6.2 Esquema lógico
@@ -261,6 +301,19 @@ sequenceDiagram
 | <timeout de dependência> | <retry, fallback ou erro> | <consistente> | <alerta> |
 | <concorrência> | <lock ou versão> | <sem perda> | <métrica> |
 | <indisponibilidade> | <degradação ou contingência> | <recuperável> | <alerta> |
+
+<Quando o fluxo tiver decisões, falhas ou compensações, represente também em `flowchart`.>
+
+```mermaid
+flowchart TD
+    A[Requisição] --> B{Validação}
+    B -- ok --> C[Persistir]
+    B -- falha --> D[Retornar erro]
+    C --> E{Confirmação}
+    E -- ok --> F[Sucesso]
+    E -- falha --> G[Compensar]
+    G --> D
+```
 
 ### 8.3 Máquinas de estado
 
@@ -407,6 +460,17 @@ stateDiagram-v2
 
 <Hospedagem, containers, banco, storage, rede e requisitos de capacidade. Sem prescrever fornecedor sem decisão registrada.>
 
+<Represente o ambiente e as conexões em `flowchart` quando houver mais de um serviço ou dependência de rede.>
+
+```mermaid
+flowchart LR
+    U[Usuário] --> LB[Balanceador]
+    LB --> APP[Aplicação]
+    APP --> DB[(Banco)]
+    APP --> FS[(Storage)]
+    APP --> QUEUE[(Fila)]
+```
+
 ### 11.4 Configuração e segredos
 
 <Como configurações e segredos são injetados, versionados e rotacionados. O que nunca entra no repositório.>
@@ -487,6 +551,20 @@ Status permitidos:
 | F1 | <componentes e contratos> | <DEC aceitas> | <testes e revisão> |
 | F2 | <evolução> | <F1> | <critério> |
 
+<Opcional: use `gantt` para mostrar ordem e dependência das fases. As datas do exemplo são ilustrativas: substitua por datas reais ou use duração relativa.>
+
+```mermaid
+gantt
+    title Fases do TDD
+    dateFormat  YYYY-MM-DD
+    section Fundação
+    Dados e autenticação      :f1, 2026-01-01, 10d
+    section Domínio
+    Contratos e fluxos        :f2, after f1, 15d
+    section Operação
+    Observabilidade e rollout :f3, after f2, 5d
+```
+
 ### 14.2 Ordem de implementação
 
 1. <fundação: dados, autenticação, esqueleto>
@@ -556,6 +634,7 @@ Status permitidos:
 - [ ] Modelo de dados cobre restrições, índices, migração e retenção.
 - [ ] Contratos de API cobrem sucesso, erro, permissão e idempotência.
 - [ ] Fluxos principais e de erro estão descritos.
+- [ ] Relacionamentos, fluxos, estados e implantação têm diagrama Mermaid ou justificativa.
 - [ ] Segurança, privacidade, observabilidade e operação estão tratadas.
 - [ ] Estratégia de testes cobre domínio, integração e não funcionais.
 - [ ] Decisões materiais estão no registro ADR e coerentes com o texto.

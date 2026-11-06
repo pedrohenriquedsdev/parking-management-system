@@ -50,6 +50,19 @@ Aplique antes de salvar. Corrija o documento, não apenas registre o problema.
 - [ ] O design evita acoplamento desnecessário a fornecedor ou framework.
 - [ ] Diagramas são versionáveis (Mermaid) ou descritos em texto.
 
+## Diagramas
+
+- [ ] Relacionamentos de dados têm `erDiagram` ou justificativa.
+- [ ] Fluxos principais e de erro têm `sequenceDiagram` ou `flowchart` quando agregam clareza.
+- [ ] Máquinas de estado têm `stateDiagram-v2` quando existe ciclo de vida.
+- [ ] Arquitetura e implantação têm diagrama de contexto/containers quando há mais de um serviço.
+- [ ] Cada diagrama tem título, rótulos claros e um único assunto.
+- [ ] Os nomes e IDs do diagrama são iguais aos do texto (`C-001`, `API-001`, `DEC-001`).
+- [ ] O diagrama não contradiz o texto, o modelo de dados ou as decisões.
+- [ ] Não há dados sensíveis, placas reais, segredos ou credenciais nos diagramas.
+- [ ] Os blocos Mermaid renderizam sem erro.
+- [ ] O catálogo de diagramas está preenchido e coerente com o documento.
+
 ## Dados e contratos
 
 - [ ] Entidades e relacionamentos cobrem o domínio do recorte.
@@ -122,7 +135,10 @@ Corrija antes de salvar se encontrar:
 - meta de teste ou cobertura inventada;
 - requisito do PRD sem componente ou teste correspondente;
 - decisão `Proposta` apresentada como `Aceita`;
-- tecnologia citada sem evidência ou decisão.
+- tecnologia citada sem evidência ou decisão;
+- diagrama que contradiz o texto, o modelo de dados ou as decisões;
+- diagrama sobrecarregado, sem título ou com dados sensíveis;
+- relacionamento, fluxo ou estado complexo explicado só em texto corrido.
 
 ## Definição de pronto
 
@@ -132,9 +148,10 @@ O TDD está pronto quando:
 2. toda decisão material está no registro ADR, com alternativas e consequências;
 3. todo requisito do PRD no recorte tem rastreabilidade completa;
 4. dados, contratos, fluxos e erros estão coerentes entre si;
-5. segurança, privacidade, observabilidade, backup e rollback foram tratados;
-6. a estratégia de testes cobre os riscos principais;
-7. as perguntas em aberto estão registradas e priorizadas;
-8. toda ambiguidade foi classificada e nenhuma **Bloqueante** ficou sem resposta ou decisão confirmada;
-9. a validação final foi respondida com autorização para salvar;
-10. o checklist acima foi aplicado sem pendências bloqueantes.
+5. relacionamentos, fluxos e estados têm diagrama Mermaid ou justificativa registrada;
+6. segurança, privacidade, observabilidade, backup e rollback foram tratados;
+7. a estratégia de testes cobre os riscos principais;
+8. as perguntas em aberto estão registradas e priorizadas;
+9. toda ambiguidade foi classificada e nenhuma **Bloqueante** ficou sem resposta ou decisão confirmada;
+10. a validação final foi respondida com autorização para salvar;
+11. o checklist acima foi aplicado sem pendências bloqueantes.
