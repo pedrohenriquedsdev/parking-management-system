@@ -173,9 +173,9 @@ Então <resultado observável>
 
 ### 12.1 Premissas
 
-| ID | Premissa | Impacto se falsa |
-| --- | --- | --- |
-| PR-001 | <premissa adotada> | <consequência> |
+| ID | Premissa | Ambiguidade de origem | Impacto se falsa | Confirmada? |
+| --- | --- | --- | --- | --- |
+| PR-001 | <premissa adotada> | <AMB-001> | <consequência> | <sim/não — data> |
 
 ### 12.2 Restrições
 
@@ -240,3 +240,13 @@ Então <resultado observável>
 | Objetivo | Requisitos | Métrica |
 | --- | --- | --- |
 | OE-001 | RF-001, RF-002 | M-001 |
+
+### D. Registro de ambiguidades
+
+Toda ambiguidade classificada durante a entrevista, inclusive as assumidas, deve aparecer aqui.
+
+| ID | Tipo | Impacto | Origem | Ação | Pergunta feita | Resposta/Premissa | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| AMB-001 | <Escopo/Comportamento/Regra de negócio/Dados/Métrica/Restrição/Integração/Termo> | <Bloqueante/Alto/Médio/Baixo> | <Prompt/Documento/Código/Inferência> | <Perguntar/Assumir/Registrar em aberto> | <pergunta> | <resposta ou premissa> | <Resolvida/Premissa confirmada/Em aberto> |
+
+> Nenhuma ambiguidade com impacto **Bloqueante** pode permanecer `Em aberto` na versão final.

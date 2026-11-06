@@ -18,6 +18,15 @@ Aplique antes de salvar. Corrija o documento, não apenas registre o problema.
 - [ ] Perguntas em aberto têm dono ou justificativa para não ter.
 - [ ] Seções não aplicáveis estão marcadas como tal, com justificativa.
 
+## Entrevista e ambiguidades
+
+- [ ] A entrevista de descoberta foi realizada (ou a contingência sem a ferramenta foi registrada).
+- [ ] Cada ambiguidade tem ID, tipo, impacto, origem e ação.
+- [ ] Toda ambiguidade **Bloqueante** ou **Alta** foi perguntada com o sistema de perguntas do ambiente ou confirmada como premissa na validação final.
+- [ ] Nenhuma ambiguidade **Bloqueante** permanece `Em aberto`.
+- [ ] O Registro de ambiguidades está preenchido e coerente com as premissas e perguntas em aberto.
+- [ ] A validação final foi feita com a ferramenta `question` e o usuário autorizou a finalização.
+
 ## Consistência
 
 - [ ] IDs são únicos e seguem o padrão (`OE`, `M`, `P`, `J`, `RF`, `RN`, `RNF`, `PR`, `R`, `Q`).
@@ -66,4 +75,6 @@ O PRD está pronto quando:
 2. todos os requisitos `Must` têm critério de aceitação;
 3. existe ao menos uma métrica de sucesso por objetivo;
 4. as perguntas em aberto estão registradas e priorizadas;
-5. o checklist acima foi aplicado sem pendências bloqueantes.
+5. toda ambiguidade foi classificada e nenhuma **Bloqueante** ficou sem resposta ou premissa confirmada;
+6. a validação final foi respondida com autorização para salvar;
+7. o checklist acima foi aplicado sem pendências bloqueantes.
